@@ -1,22 +1,31 @@
 require 'em-websocket'
+require 'json'
+
+@channel = EM::Channel.new
 
 EM.run {
-  EM::WebSocket.run(:host => "0.0.0.0", :port => 8080) do |ws|
-    ws.onopen { |handshake|
-      puts "WebSocket connection open"
+  EM::WebSocket.run(:host => "127.0.0.1", :port => 8080, :debug => false) do |ws|
 
-      # Access properties on the EM::WebSocket::Handshake object, e.g.
-      # path, query_string, origin, headers
+    ws.onopen {
+      sid = @channel.subscribe { |msg| ws.send msg }
+      #@channel.push "#{sid} connected!"
 
-      # Publish message to the client
-      ws.send "Hello Client, you connected to #{handshake.path}"
-    }
+      ws.onmessage { |msg|
+        msg = JSON.parse(msg, :symbolize_names => true)
+        @channel.push "#{msg[:username]}: #{msg[:message]}"
+      }
 
-    ws.onclose { puts "Connection closed" }
+      ws.onclose {
+        @channel.push("You are being unsubscribed.")
+        @channel.unsubscribe(sid)
+      }
 
-    ws.onmessage { |msg|
-      puts "Recieved message: #{msg}"
-      ws.send "Pong: #{msg}"
+      ws.onerror { |e|
+        @channel.push "Error: #{e.message}"
+      }
     }
   end
 }
+
+
+
