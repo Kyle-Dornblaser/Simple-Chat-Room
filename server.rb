@@ -1,27 +1,28 @@
 require 'em-websocket'
 require 'json'
 
-@channel = EM::Channel.new
+@chatroom = EM::Channel.new
 
 EM.run {
   EM::WebSocket.run(:host => "127.0.0.1", :port => 8080, :debug => false) do |ws|
 
     ws.onopen {
-      sid = @channel.subscribe { |msg| ws.send msg }
-      #@channel.push "#{sid} connected!"
+      sid = @chatroom.subscribe { |msg| ws.send msg }
+      #@chatroom.push "#{sid} connected!"
 
       ws.onmessage { |msg|
         msg = JSON.parse(msg, :symbolize_names => true)
-        @channel.push "#{msg[:username]}: #{msg[:message]}"
+        msg[:timestamp] = Time.now
+        msg = JSON.generate(msg)
+        @chatroom.push msg
       }
 
       ws.onclose {
-        @channel.push("You are being unsubscribed.")
-        @channel.unsubscribe(sid)
+        @chatroom.unsubscribe(sid)
       }
 
       ws.onerror { |e|
-        @channel.push "Error: #{e.message}"
+        @chatroom.push "Error: #{e.message}"
       }
     }
   end

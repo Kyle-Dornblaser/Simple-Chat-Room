@@ -7,11 +7,11 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
     <title>Starter Template for Bootstrap</title>
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -22,14 +22,22 @@
 
 <body>
 
-    <div class="container">
-        <div class="row">
-            <input id="username">
-            <input id="message">
-            <button id="send">Send</button>
-            <div id="debug"></div>
+<div class="container">
+    <div id="messages">
+
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <input id="username" class="form-control" placeholder="Username">
+        </div>
+        <div class="col-md-5">
+            <input id="message" class="form-control" placeholder="Message">
+        </div>
+        <div class="col-md-2">
+            <button id="send" class="btn btn-primary full-width">Send</button>
         </div>
     </div>
-    <script src="js/app.js"></script>
+</div>
+<script src="js/app.js"></script>
 </body>
 </html>
