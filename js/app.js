@@ -125,6 +125,12 @@
             clearMessageInput: function() {
                 this.messageInput.value = '';
             },
+            enableUsernameInput: function () {
+                this.usernameInput.disabled = false;
+            },
+            disableUsernameInput: function () {
+                this.usernameInput.disabled = true;
+            },
             error: function (errorStr) {
                 alert(errorStr);
             }
@@ -147,6 +153,10 @@
                 this.ws.onmessage = function (evt) {
                     var message = JSON.parse(evt.data);
                     var createdMessage = Model.message.create(message.message, message.user, message.timestamp);
+                    // enable username box if Server asks for a change.
+                    if(createdMessage.user === 'Server' && createdMessage.message.indexOf('Please select a different username') >= 0) {
+                        View.chatroom.enableUsernameInput();
+                    }
                     View.chatroom.renderMessage(createdMessage);
                 };
                 this.ws.onclose = function (event) {
@@ -168,6 +178,7 @@
                         message: messageStr
                     }));
                     View.chatroom.clearMessageInput();
+                    View.chatroom.disableUsernameInput();
                 }
 
             }
