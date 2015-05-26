@@ -78,8 +78,8 @@ var View = {
         renderMessage: function (message) {
 
             var date = new Date(message.timestamp);
-            var day = 24 * 60 * 60 * 1000;
-            if (Date.now() - date < day) {
+            var today = new Date();
+            if (today.toDateString() === date.toDateString()) {
                 var timestamp = date.toLocaleTimeString();
             } else {
                 var timestamp = date.toDateString();
