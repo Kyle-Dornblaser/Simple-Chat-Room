@@ -1,3 +1,6 @@
+body {
+    margin-bottom: 20px;
+}
 #messages {
     height: 500px;
     background-color: #efefef;
@@ -20,4 +23,17 @@
 .local-user {
     color: #317fff;
     font-weight: bold;
+}
+
+input {
+    margin-bottom: 20px;
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+
+    #github {
+        margin: 21px 0 0 0;
+    }
+
 }
