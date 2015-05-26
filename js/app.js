@@ -72,10 +72,19 @@ var View = {
                 var message = messages[i];
                 this.renderMessage(message);
             }
-            var sessionDivider = document.createElement('div');
-            sessionDivider.innerHTML = '<strong>End messages from previous sessions. Begin new messages from this session.</strong>';
-            this.messages.appendChild(sessionDivider);
-            this.messages.scrollTop = this.messages.scrollHeight;
+            if (messages.length > 0) {
+                this.renderMessage({
+                    user: 'Server',
+                    message: 'End of messages from previous sessions. Begin new messages from this session.',
+                    timestamp: (new Date()).getTime()
+                });
+            } else {
+                this.renderMessage({
+                    user: 'Server',
+                    message: 'Welcome to the chat. Enter your username and messages below.',
+                    timestamp: (new Date()).getTime()
+                });
+            }
 
         },
         renderMessage: function (message) {
@@ -91,10 +100,10 @@ var View = {
 
             var leftCol = document.createElement('div');
             leftCol.className = 'col-md-9';
-            if (message.user === Controller.user.getName()) {
-                var user = '<span class="local-user">' + message.user + '</span>'
-            } else if(message.user === 'Server') {
+            if (message.user === 'Server') {
                 var user = '<span class="server-user">' + message.user + '</span>'
+            } else if (message.user === Controller.user.getName()) {
+                var user = '<span class="local-user">' + message.user + '</span>'
             } else {
                 var user = message.user;
             }
