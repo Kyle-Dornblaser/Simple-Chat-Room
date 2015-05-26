@@ -122,6 +122,9 @@
                 this.messages.appendChild(messageElement);
                 this.messages.scrollTop = this.messages.scrollHeight;
             },
+            clearMessageInput: function() {
+                this.messageInput.value = '';
+            },
             error: function (errorStr) {
                 alert(errorStr);
             }
@@ -147,10 +150,10 @@
                     View.chatroom.renderMessage(createdMessage);
                 };
                 this.ws.onclose = function (event) {
-                    console.log("Closed - code: " + event.code + ", reason: " + event.reason + ", wasClean: " + event.wasClean);
+                    //console.log("Closed - code: " + event.code + ", reason: " + event.reason + ", wasClean: " + event.wasClean);
                 };
                 this.ws.onopen = function () {
-                    console.log("connected...");
+                    //console.log("connected...");
                 };
             },
             sendMessage: function (messageStr) {
@@ -164,6 +167,7 @@
                         user: userStr,
                         message: messageStr
                     }));
+                    View.chatroom.clearMessageInput();
                 }
 
             }
