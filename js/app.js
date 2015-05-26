@@ -93,6 +93,8 @@ var View = {
             leftCol.className = 'col-md-9';
             if (message.user === Controller.user.getName()) {
                 var user = '<span class="local-user">' + message.user + '</span>'
+            } else if(message.user === 'Server') {
+                var user = '<span class="server-user">' + message.user + '</span>'
             } else {
                 var user = message.user;
             }

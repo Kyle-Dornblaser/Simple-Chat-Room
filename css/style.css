@@ -25,6 +25,11 @@ body {
     font-weight: bold;
 }
 
+.server-user {
+    color: #ff3224;
+    font-weight: bold;
+}
+
 input {
     margin-bottom: 20px;
 }
