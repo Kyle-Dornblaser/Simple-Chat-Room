@@ -14,6 +14,9 @@ var Model = {
 
             var messages = this.all();
             messages.push(message);
+            if (messages.length > 500) {
+                messages = messages.slice(messages.length - 500, messages.length);
+            }
             localStorage.messages = JSON.stringify(messages);
 
             return message;
@@ -87,8 +90,8 @@ var View = {
 
             var leftCol = document.createElement('div');
             leftCol.className = 'col-md-9';
-            if(message.user === Controller.user.getName()) {
-                var user = '<span class="local-user">' + message.user +'</span>'
+            if (message.user === Controller.user.getName()) {
+                var user = '<span class="local-user">' + message.user + '</span>'
             } else {
                 var user = message.user;
             }
@@ -105,6 +108,9 @@ var View = {
             messageElement.appendChild(rightCol);
             this.messages.appendChild(messageElement);
             this.messages.scrollTop = this.messages.scrollHeight;
+        },
+        error: function (errorStr) {
+            alert(errorStr);
         }
     }
 };
@@ -135,10 +141,18 @@ var Controller = {
             };
         },
         sendMessage: function (messageStr) {
-            this.ws.send(JSON.stringify({
-                user: Model.user.getName(),
-                message: messageStr
-            }));
+            var userStr = Model.user.getName();
+            if (userStr === '') {
+                View.chatroom.error('Username is required.');
+            } else if (messageStr === '') {
+                View.chatroom.error('Message is required.');
+            } else {
+                this.ws.send(JSON.stringify({
+                    user: userStr,
+                    message: messageStr
+                }));
+            }
+
         }
     },
     user: {
