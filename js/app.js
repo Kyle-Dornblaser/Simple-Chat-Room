@@ -82,6 +82,7 @@ var View = {
 
             var date = new Date(message.timestamp);
             var today = new Date();
+
             if (today.toDateString() === date.toDateString()) {
                 var timestamp = date.toLocaleTimeString();
             } else {

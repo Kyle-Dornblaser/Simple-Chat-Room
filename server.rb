@@ -12,7 +12,7 @@ EM.run {
 
       ws.onmessage { |msg|
         msg = JSON.parse(msg, :symbolize_names => true)
-        msg[:timestamp] = Time.now
+        msg[:timestamp] = Time.now.to_i * 1000 # * 1000 because JavaScript needs milliseconds
         msg = JSON.generate(msg)
         @chatroom.push msg
       }
